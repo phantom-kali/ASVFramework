@@ -21,8 +21,8 @@ dot_product_loop:
     cmp rcx, rdx            ; Check if we've reached the end of the loop
     jge dot_product_end     ; If yes, jump to the end
 
-    movzx rbx, byte [rdi + rcx] ; Get element from first vector
-    imul rbx, dword [rsi + rcx * 4] ; Multiply by corresponding element in second vector
+    mov eax, dword [rdi + rcx * 4] ; Fix: Use correct size for vector elements
+    imul eax, dword [rsi + rcx * 4] ; Fix: Use correct operand sizes
     add rax, rbx            ; Add to the result
 
     inc rcx                 ; Move to the next element
@@ -47,9 +47,10 @@ vector_addition_loop:
     cmp r8, rcx             ; Check if we've reached the end of the loop
     jge vector_addition_end ; If yes, jump to the end
 
-    movzx rax, byte [rdi + r8 * 4] ; Get element from the first vector
-    add eax, dword [rsi + r8 * 4]  ; Add the corresponding element from the second vector
-    mov dword [rdx + r8 * 4], eax  ; Store in the destination vector
+    ; Fix: Use proper size for memory access
+    mov eax, dword [rdi + r8 * 4]  ; Changed from movzx to mov
+    add eax, dword [rsi + r8 * 4]  
+    mov dword [rdx + r8 * 4], eax  
 
     inc r8                  ; Move to the next element
     jmp vector_addition_loop; Repeat the loop
@@ -73,9 +74,10 @@ scalar_multiplication_loop:
     cmp r8, rcx             ; Check if we've reached the end of the loop
     jge scalar_multiplication_end ; If yes, jump to the end
 
-    movzx rax, byte [rdi + r8 * 4] ; Get element from the vector
-    imul eax, rsi           ; Multiply by the scalar
-    mov dword [rdx + r8 * 4], eax  ; Store in the destination vector
+    ; Fix: Use proper size for memory access
+    mov eax, dword [rdi + r8 * 4]  ; Changed from movzx to mov
+    imul eax, esi                  ; Use esi for scalar value
+    mov dword [rdx + r8 * 4], eax  
 
     inc r8                  ; Move to the next element
     jmp scalar_multiplication_loop ; Repeat the loop
@@ -110,3 +112,30 @@ euclidean_norm_loop:
 euclidean_norm_end:
     call sqrt_approx        ; Call sqrt approximation (not included here)
     ret                     ; Return from the function
+
+sqrt_approx:
+    push rbp
+    mov rbp, rsp
+    
+    ; Simple Newton's method for square root
+    mov rcx, 10            ; Number of iterations
+    cvtsi2sd xmm0, rax    ; Convert input to double
+    movsd xmm1, xmm0      ; Initial guess x = n
+    movsd xmm2, [rel two] ; Load constant 2.0
+    
+newton_loop:
+    movsd xmm3, xmm0      ; Load n
+    divsd xmm3, xmm1      ; n/x
+    addsd xmm3, xmm1      ; x + n/x
+    divsd xmm3, xmm2      ; (x + n/x)/2
+    movsd xmm1, xmm3      ; Store result back to x
+    
+    dec rcx
+    jnz newton_loop
+    
+    cvttsd2si rax, xmm1   ; Convert result back to integer
+    pop rbp
+    ret
+
+section .data
+    two dq 2.0            ; Constant for sqrt calculation

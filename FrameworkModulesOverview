@@ -1,53 +1,58 @@
-1. Core Math Operations Module
+# SVM Framework Modules Overview
+
+## 1. Core Math Operations Module
 This module contains basic mathematical operations required for SVM, such as dot product and vector operations.
 
-Functions
-Dot Product: Computes the dot product between two vectors.
-Vector Addition: Adds two vectors together.
-Scalar Multiplication: Multiplies a vector by a scalar.
-Euclidean Norm: Computes the norm (length) of a vector.
-Dependencies
-No external dependencies; this module can be stand-alone.
-2. Data Processing Module
-This module handles the data representation and manipulation required for SVM. It should be able to import and export data, and possibly scale or normalize it.
+### Functions
+- Dot Product: Computes the dot product between two vectors.
+- Vector Addition: Adds two vectors together.
+- Scalar Multiplication: Multiplies a vector by a scalar.
+- Euclidean Norm: Computes the norm (length) of a vector.
 
-Functions
-Load Data: Reads data from a file or other source into memory.
-Normalize Data: Scales data to a specified range or mean/standard deviation.
-Shuffle Data: Shuffles data points for training randomness.
-Split Data: Splits data into training and testing sets.
-Dependencies
-Depends on the core math operations module for normalization functions.
-3. SVM Model Module
-This module implements the SVM algorithm, including training and prediction.
+### Dependencies
+No external dependencies—it can be used as a stand-alone module.
 
-Functions
-Initialize Model: Initializes model parameters (weights and bias).
-Train SVM: Trains the SVM with gradient descent or SMO.
-Compute Gradient: Computes the gradient for weight/bias updates.
-Predict: Predicts the class of a given data point based on the model.
-Calculate Loss: Computes the loss function (e.g., hinge loss).
-Dependencies
-Depends on the core math operations module for dot product and vector operations.
-Depends on the data processing module for input data.
-4. SVM Utilities Module
-This module contains utility functions that support the SVM operations, such as data transformation and I/O operations.
+## 2. Data Processing Module
+This module handles the data representation and manipulation required for SVM: importing, exporting, normalizing, and splitting data.
 
-Functions
-Save Model: Saves the SVM model to a file for later use.
-Load Model: Loads a previously saved SVM model.
-Calculate Accuracy: Computes the accuracy of the SVM on a given dataset.
-Log Metrics: Logs training metrics such as loss and accuracy.
-Dependencies
-Depends on the SVM model module for model-related operations.
-Depends on the data processing module for handling input/output operations.
+### Functions
+- Load Data: Reads data from a file/source into memory.
+- Normalize Data: Scales data to a specified range or mean/standard deviation.
+- Shuffle Data: Randomizes data points for training.
+- Split Data: Divides data into training/testing sets.
 
+### Dependencies
+Depends on the Core Math Operations Module for normalization and vector operations.
 
+## 3. SVM Model Module
+Implements the SVM algorithm, including training and prediction logic.
 
-Module Dependency Overview
-Here's a quick overview of how the modules depend on each other:
+### Functions
+- Initialize Model: Initializes model parameters (weights/bias).
+- Train SVM: Trains the SVM model (e.g., via gradient descent).
+- Compute Gradient: Calculates gradients for updates.
+- Predict: Predicts the class of a given data point.
+- Calculate Loss: Computes the chosen loss function (e.g., hinge loss).
 
-Core Math Operations Module: Stand-alone, no dependencies.
-Data Processing Module: Depends on Core Math Operations for data manipulation.
-SVM Model Module: Depends on Core Math Operations for basic math, and on Data Processing for training data.
-SVM Utilities Module: Depends on SVM Model for model-related tasks and on Data Processing for I/O and logging.
+### Dependencies
+- Core Math Operations for dot product and other math ops.
+- Data Processing Module for training data handling.
+
+## 4. SVM Utilities Module
+Offers utility functions that support the SVM operations, such as logging and model persistence.
+
+### Functions
+- Save Model: Saves the SVM model parameters to a file.
+- Load Model: Loads a previously saved model.
+- Calculate Accuracy: Measures model accuracy on a dataset.
+- Log Metrics: Logs training metrics (loss, accuracy, etc.).
+
+### Dependencies
+- SVM Model Module for model-related tasks.
+- Data Processing Module for data I/O.
+
+## Module Dependency Overview
+- Core Math Operations: standalone.
+- Data Processing: depends on Core Math for data manipulation.
+- SVM Model: depends on Core Math for computations, Data Processing for input data.
+- SVM Utilities: depends on SVM Model for model ops and Data Processing for I/O.
