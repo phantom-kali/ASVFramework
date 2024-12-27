@@ -23,6 +23,7 @@ This project provides a simple SVM (Support Vector Machine) framework written in
 ## Running
 1. Generate test data (optional):
    ```
+   pip install -r requirements.txt
    python3 generate_test_data.py
    ```
 2. Run the executable:
